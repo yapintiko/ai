@@ -7,7 +7,7 @@ detector = pipeline("image-classification", model="umm-maybe/AI-image-detector")
 
 st.set_page_config(page_title="AI Image Detection", page_icon="🖼️", layout="centered")
 
-st.title("🖼️ AI Görsel Tespit Demo")
+st.title("🖼️ Yapay Zeka mı? Değil mi?")
 st.write("Bir resim yükle, yapay zekâ tarafından üretilmiş mi öğren!")
 
 # Dosya yükleme alanı
@@ -35,3 +35,4 @@ if uploaded_file is not None:
         label_tr = label_mapping.get(label_en.lower(), label_en)  # bilinmeyen etiketler İngilizce kalır
         score = round(r["score"] * 100, 2)
         st.write(f"**{label_tr}**: {score}%")
+
