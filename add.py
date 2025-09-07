@@ -1,27 +1,29 @@
 import streamlit as st
 from transformers import pipeline
 from PIL import Image
-import io
 
-# Hugging Face AI detection modeli
+# Hugging Face modelini yükle
+# Burada örnek olarak küçük bir AI-image detector modeli seçtik
 detector = pipeline("image-classification", model="umm-maybe/AI-image-detector")
 
-st.set_page_config(page_title="AI Detection Demo", page_icon="🤖", layout="centered")
+st.set_page_config(page_title="AI Image Detection", page_icon="🖼️", layout="centered")
 
-st.title("🤖 AI Detection Demo")
-st.write("Bir resim yükle, gerçek mi yoksa yapay zekâ ile mi üretilmiş öğren!")
+st.title("🖼️ AI Image Detection Demo")
+st.write("Bir resim yükle, yapay zekâ tarafından üretilmiş mi öğren!")
 
+# Dosya yükleme alanı
 uploaded_file = st.file_uploader("Resim yükle", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
-    # Görseli aç
+    # Görseli aç ve ekranda göster
     image = Image.open(uploaded_file)
     st.image(image, caption="Yüklenen Görsel", use_column_width=True)
 
-    # AI Detection çalıştır
+    # Analiz yap
     with st.spinner("Analiz ediliyor..."):
         results = detector(image)
 
+    # Sonucu göster
     st.subheader("🔍 Sonuç")
     for r in results:
         label = r["label"]
