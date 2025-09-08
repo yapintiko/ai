@@ -29,14 +29,16 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ---------- RESIM DETECTOR ----------
+# Küçük CPU uyumlu model
 image_detector = pipeline(
     "image-classification",
-    model="google/vit-base-patch16-224",
+    model="google/tiny-vit",
     device=-1  # CPU kullan
 )
 
 # ---------- ETIKETLER ----------
-label_mapping = {"LABEL_0": "İnsan", "LABEL_1": "Yapay Zeka"}  # Modelin etiketleri farklı olabilir
+# google/tiny-vit default etiketler ImageNet sınıflarıdır, örnek Türkçe mapping
+label_mapping = {}  # Boş bırakabilir veya kendi çevirilerini ekleyebilirsin
 
 # ---------- ANALIZ GEÇMİŞİ ----------
 if "history" not in st.session_state:
@@ -56,7 +58,7 @@ if uploaded_file is not None:
     for r in results:
         label = r["label"]
         score = round(r["score"] * 100, 2)
-        # Etiketleri Türkçeye çevir
+        # Etiketleri Türkçeye çevir (isteğe bağlı)
         label_tr = label_mapping.get(label, label)
         st.success(f"{label_tr}: {score}%")
         display_results.append(f"{label_tr}: {score}%")
