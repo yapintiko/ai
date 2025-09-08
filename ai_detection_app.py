@@ -15,7 +15,7 @@ except FileNotFoundError:
 # ---------- ÜST BANNER ----------
 st.markdown("""
 <div style="background-color:#4a90e2; padding:15px; border-radius:10px; margin-bottom:15px;">
-<h2 style="color:white; text-align:center; margin:0;">🤖 AI Detection Demo</h2>
+<h2 style="color:white; text-align:center; margin:0;">🤖 Yapay Zeka mı? Değil mi?</h2>
 <p style="color:white; text-align:center; margin:0;">Resim Yapay Zeka Tespiti</p>
 </div>
 """, unsafe_allow_html=True)
@@ -57,3 +57,4 @@ if st.session_state.history:
     for i, entry in enumerate(reversed(st.session_state.history), 1):
         st.markdown(f"**{i}. {entry['filename']}**")
         st.write(f"- {entry['result']}")
+
