@@ -33,7 +33,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ---------- MODELLER ----------
-image_detector = pipeline("image-classification", model="umm-maybe/AI-image-detector")
+image_detector = pipeline("image-classification", model="umm-maybe/AI-image-detector", device=-1) 
 video_detector = pipeline("video-classification", model="tayyabimam/Deepfake")
 
 # ---------- ETIKETLER ----------
@@ -190,3 +190,4 @@ if st.session_state.history:
         file_name="ai_detection_history.csv",
         mime="text/csv"
     )
+
