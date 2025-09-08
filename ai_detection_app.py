@@ -34,7 +34,8 @@ st.markdown("""
 
 # ---------- MODELLER ----------
 image_detector = pipeline("image-classification", model="umm-maybe/AI-image-detector", device=-1) 
-video_detector = pipeline("video-classification", model="tayyabimam/Deepfake")
+video_detector = pipeline("video-classification", model="facebook/mvi-vit-base", device=-1)
+
 
 # ---------- ETIKETLER ----------
 image_label_mapping = {"artificial": "Yapay Zeka", "human": "İnsan"}
@@ -190,4 +191,5 @@ if st.session_state.history:
         file_name="ai_detection_history.csv",
         mime="text/csv"
     )
+
 
