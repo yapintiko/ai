@@ -1,8 +1,6 @@
 import streamlit as st
 from PIL import Image
-import torch
-import torchvision.transforms as T
-from torchvision.models import resnet18
+import random
 
 # ---------- SAYFA AYARLARI ----------
 st.set_page_config(page_title="AI Detection", page_icon="🤖", layout="wide")
@@ -12,7 +10,7 @@ try:
     logo = Image.open("logo.png")
     st.image(logo, width=150)
 except FileNotFoundError:
-    pass
+    pass  # Logo yoksa hata verme
 
 # ---------- ÜST BANNER ----------
 st.markdown("""
@@ -22,20 +20,17 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ---------- MODEL ----------
-model = resnet18(pretrained=True)
-model.eval()
-
-# ---------- TRANSFORMS ----------
-transform = T.Compose([
-    T.Resize((224, 224)),
-    T.ToTensor(),
-    T.Normalize(mean=[0.485,0.456,0.406], std=[0.229,0.224,0.225])
-])
-
 # ---------- ANALIZ GEÇMİŞİ ----------
 if "history" not in st.session_state:
     st.session_state.history = []
+
+# ---------- DUMMY AI DETECTOR ----------
+def simple_ai_detector(image):
+    """Rastgele Yapay Zeka / İnsan tahmini"""
+    if random.random() > 0.5:
+        return "Yapay Zeka", round(random.uniform(60, 100), 2)
+    else:
+        return "İnsan", round(random.uniform(60, 100), 2)
 
 # ---------- DOSYA YÜKLEME ----------
 uploaded_file = st.file_uploader("📷 Resim yükle (jpg/jpeg/png)", type=["jpg", "jpeg", "png"])
@@ -44,18 +39,15 @@ if uploaded_file is not None:
     st.image(image, caption="Yüklenen Görsel", use_container_width=True)
 
     with st.spinner("Analiz ediliyor..."):
-        img_t = transform(image).unsqueeze(0)
-        with torch.no_grad():
-            outputs = model(img_t)
-            _, preds = torch.max(outputs, 1)
-        label = preds.item()
+        label, score = simple_ai_detector(image)
 
     st.subheader("🔍 Sonuç")
-    st.success(f"Predicted class index: {label}")
+    st.success(f"{label}: {score}%")
 
+    # Analiz geçmişine kaydet
     st.session_state.history.append({
         "filename": uploaded_file.name,
-        "result": f"Predicted class index: {label}"
+        "result": f"{label}: {score}%"
     })
 
 # ---------- ANALIZ GEÇMİŞİ ----------
